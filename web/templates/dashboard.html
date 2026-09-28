@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Khokho Bl3{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <img src="{{ user|avatar_url }}" alt="avatar" class="dashboard-avatar">
+        <div>
+            <h1>Marhba, <span class="gradient-text">{{ user.global_name or user.username }}</span>! 👋</h1>
+            <p class="muted">ID: <code>{{ user.id }}</code></p>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-card-icon">🖥️</div>
+            <div class="stat-card-value">{{ guilds|length }}</div>
+            <div class="stat-card-label">Servers</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-icon">👑</div>
+            <div class="stat-card-value">{{ admin_guilds|length }}</div>
+            <div class="stat-card-label">Admin f</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-icon">🎮</div>
+            <div class="stat-card-value">150+</div>
+            <div class="stat-card-label">Commands</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <h2>👑 Servers li nti Admin fihom</h2>
+            <a href="/servers" class="btn btn-secondary btn-sm">Chouf kolchi</a>
+        </div>
+        {% if admin_guilds %}
+            <div class="guilds-grid">
+                {% for g in admin_guilds[:8] %}
+                <a href="/server/{{ g.id }}" class="guild-card">
+                    <img src="{{ g|guild_icon }}" alt="icon" class="guild-icon">
+                    <div class="guild-name">{{ g.name }}</div>
+                </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>😢 Ma nti admin f hta server</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

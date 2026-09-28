@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}{{ guild.name }} — Khokho Bl3{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="server-header">
+        <img src="{{ guild|guild_icon }}" alt="icon" class="server-icon">
+        <div>
+            <h1>{{ guild.name }}</h1>
+            <p class="muted">ID: <code>{{ guild.id }}</code></p>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-card-icon">💰</div>
+            <div class="stat-card-value">{{ stats.economy_users|fmt_num }}</div>
+            <div class="stat-card-label">Economy users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-icon">📊</div>
+            <div class="stat-card-value">{{ stats.level_users|fmt_num }}</div>
+            <div class="stat-card-label">Level users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-card-icon">⚠️</div>
+            <div class="stat-card-value">{{ stats.warned_users|fmt_num }}</div>
+            <div class="stat-card-label">Warned</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>👤 Stats Dyalek f had Server</h2>
+        <div class="my-stats-grid">
+            <div class="my-stat">
+                <div class="my-stat-label">💰 Wallet</div>
+                <div class="my-stat-value">{{ my_eco.balance|default(0)|fmt_num }} 🪙</div>
+            </div>
+            <div class="my-stat">
+                <div class="my-stat-label">🏦 Bank</div>
+                <div class="my-stat-value">{{ my_eco.bank|default(0)|fmt_num }} 🪙</div>
+            </div>
+            <div class="my-stat">
+                <div class="my-stat-label">📊 Level</div>
+                <div class="my-stat-value">{{ my_lv.level|default(0) }}</div>
+            </div>
+            <div class="my-stat">
+                <div class="my-stat-label">✨ XP</div>
+                <div class="my-stat-value">{{ my_lv.xp|default(0)|fmt_num }}</div>
+            </div>
+            <div class="my-stat">
+                <div class="my-stat-label">🔮 Bir</div>
+                <div class="my-stat-value">{{ my_bir|fmt_num }}</div>
+            </div>
+            <div class="my-stat">
+                <div class="my-stat-label">💬 Messages</div>
+                <div class="my-stat-value">{{ my_lv.messages|default(0)|fmt_num }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🏆 Top 10 — Money</h2>
+        <div id="lb-money" class="leaderboard">
+            <div class="loading">Loading...</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📊 Top 10 — Levels</h2>
+        <div id="lb-levels" class="leaderboard">
+            <div class="loading">Loading...</div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── Data attributes bash VS Code ma ydirch error ─── -->
+<div id="guild-data" data-guild-id="{{ guild.id }}" style="display:none;"></div>
+
+<script>
+(function() {
+    // ✅ Jbed GUILD_ID mn data attribute — VS Code happy 😊
+    const guildData = document.getElementById("guild-data");
+    const GUILD_ID = parseInt(guildData.dataset.guildId, 10);
+
+    function renderLB(id, data, fmt) {
+        const el = document.getElementById(id);
+        if (!data || data.length === 0) {
+            el.innerHTML = '<div class="empty-state">Ma kaynch data</div>';
+            return;
+        }
+        const medals = ["🥇", "🥈", "🥉"];
+        el.innerHTML = data.map(function(u, i) {
+            const rank = medals[i] || ("#" + (i + 1));
+            return '<div class="lb-row">' +
+                   '<div class="lb-rank">' + rank + '</div>' +
+                   '<div class="lb-user">User <code>' + u.user_id + '</code></div>' +
+                   '<div class="lb-value">' + fmt(u) + '</div>' +
+                   '</div>';
+        }).join("");
+    }
+
+    async function loadLeaderboards() {
+        try {
+            const moneyResp = await fetch("/api/leaderboard/" + GUILD_ID + "/money");
+            const money = await moneyResp.json();
+
+            const levelsResp = await fetch("/api/leaderboard/" + GUILD_ID + "/levels");
+            const levels = await levelsResp.json();
+
+            renderLB("lb-money", money, function(u) {
+                return u.total.toLocaleString() + " 🪙";
+            });
+            renderLB("lb-levels", levels, function(u) {
+                return "Level " + u.level + " — " + u.xp.toLocaleString() + " XP";
+            });
+        } catch (e) {
+            console.error("Leaderboard error:", e);
+        }
+    }
+
+    loadLeaderboards();
+})();
+</script>
+{% endblock %}

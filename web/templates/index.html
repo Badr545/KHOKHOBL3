@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Khokho Bl3 — Discord Bot{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">✨ 150+ Commands</div>
+        <h1 class="hero-title">
+            L-Bot <span class="gradient-text">L-Ahssan</span><br>
+            l-Server Dyalek
+        </h1>
+        <p class="hero-subtitle">
+            Banking • Economy • Gambling • Levels • Tickets • AutoMod<br>
+            Kolchi f bot wa7ed 💎
+        </p>
+        <div class="hero-buttons">
+            {% if user %}
+                <a href="/dashboard" class="btn btn-primary">
+                    📊 Dashboard
+                </a>
+            {% else %}
+                <a href="/login" class="btn btn-primary">
+                    🔐 Login b Discord
+                </a>
+            {% endif %}
+            <a href="https://discord.com/oauth2/authorize?client_id=YOUR_BOT_ID&permissions=8&scope=bot%20applications.commands"
+               class="btn btn-secondary" target="_blank">
+                ➕ Invite Bot
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-features">
+        <div class="feature-card">
+            <div class="feature-icon">🏦</div>
+            <h3>Banking System</h3>
+            <p>Loans, Businesses, Stocks, Crypto, Savings</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎰</div>
+            <h3>19 Casino Games</h3>
+            <p>Blackjack, Slots, Mines, Crash, Poker...</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Levels & Ranks</h3>
+            <p>XP system, Rank cards, Leaderboards</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>Protection</h3>
+            <p>Anti-Raid, Anti-Nuke, AutoMod</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🎫</div>
+            <h3>Support Tickets</h3>
+            <p>Ticket system + HTML transcripts</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💎</div>
+            <h3>Premium</h3>
+            <p>4 tiers + license codes</p>
+        </div>
+    </div>
+</div>
+
+<div class="stats-bar">
+    <div class="stat">
+        <div class="stat-value">150+</div>
+        <div class="stat-label">Commands</div>
+    </div>
+    <div class="stat">
+        <div class="stat-value">40+</div>
+        <div class="stat-label">Features</div>
+    </div>
+    <div class="stat">
+        <div class="stat-value">99.9%</div>
+        <div class="stat-label">Uptime</div>
+    </div>
+    <div class="stat">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">Online</div>
+    </div>
+</div>
+{% endblock %}

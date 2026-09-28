@@ -1,0 +1,18 @@
+# /etc/systemd/system/khokho.service
+[Unit]
+Description=Khokho Bl3 Discord Bot
+After=network.target
+
+[Service]
+Type=simple
+User=botuser
+WorkingDirectory=/opt/khokho-bl3
+ExecStart=/opt/khokho-bl3/venv/bin/python /opt/khokho-bl3/app.py
+Restart=always
+RestartSec=10
+StandardOutput=append:/var/log/khokho/bot.log
+StandardError=append:/var/log/khokho/error.log
+EnvironmentFile=/opt/khokho-bl3/.env
+
+[Install]
+WantedBy=multi-user.target

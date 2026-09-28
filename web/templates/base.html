@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Khokho Bl3 Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-icon">🤖</span>
+                <span class="logo-text">Khokho Bl3</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                {% if user %}
+                    <a href="/dashboard" class="nav-link">Dashboard</a>
+                    <a href="/servers" class="nav-link">Servers</a>
+                    <div class="nav-user">
+                        <img src="{{ user|avatar_url }}" alt="avatar" class="nav-avatar">
+                        <span class="nav-username">{{ user.global_name or user.username }}</span>
+                        <a href="/logout" class="btn-logout">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="/login" class="btn-login">Login b Discord</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Made with ❤️ by <strong>Khokho Bl3</strong> • {{ now_year if now_year else 2026 }}</p>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/dashboard">Dashboard</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
